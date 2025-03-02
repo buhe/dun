@@ -51,25 +51,24 @@ class SquatCounter: ObservableObject {
 
 struct ContentView: View {
     @StateObject private var squatCounter = SquatCounter()
-    @State private var targetSquats = 10
-    let targetOptions = Array(stride(from: 10, through: 100, by: 10))
+    @State private var targetSquats = 10.0
     
     var body: some View {
         VStack(spacing: 20) {
-            Text("\(squatCounter.count)/\(targetSquats)")
+            Text("\(Int(squatCounter.count))/\(Int(targetSquats))")
                 .font(.system(size: 40, weight: .bold))
             
-            ProgressView(value: Double(squatCounter.count), total: Double(targetSquats))
+            ProgressView(value: Double(squatCounter.count), total: targetSquats)
                 .tint(.green)
                 .padding(.horizontal)
             
-            Picker("目标次数", selection: $targetSquats) {
-                ForEach(targetOptions, id: \.self) { target in
-                    Text("\(target)次").tag(target)
-                }
-            }
+            Text("\(Int(targetSquats))次")
+                .font(.system(size: 24))
+                .foregroundColor(.blue)
+                .focusable()
+                .digitalCrownRotation($targetSquats, from: 10.0, through: 100.0, by: 10.0)
             
-            if squatCounter.count >= targetSquats {
+            if Double(squatCounter.count) >= targetSquats {
                 Text("🎉 目标达成！")
                     .foregroundColor(.green)
             }
