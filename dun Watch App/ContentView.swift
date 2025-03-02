@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreMotion
+import WatchKit
 
 class SquatCounter: ObservableObject {
     private let motionManager = CMMotionManager()
@@ -29,11 +30,16 @@ class SquatCounter: ObservableObject {
             let verticalMovement = gravity.y
             
             // 检测蹲下和站起的阈值
-            if let strongSelf = self, verticalMovement < -0.7 && !strongSelf.isInSquatPosition {
+            if let strongSelf = self, verticalMovement < -0.20 && !strongSelf.isInSquatPosition {
                 strongSelf.isInSquatPosition = true
-            } else if let strongSelf = self, verticalMovement > -0.3 && strongSelf.isInSquatPosition {
+            } else if let strongSelf = self, verticalMovement > -0.19 && strongSelf.isInSquatPosition {
                 strongSelf.isInSquatPosition = false
                 strongSelf.count += 1
+                
+                // 每完成5次震动提示一次
+                if strongSelf.count % 5 == 0 {
+                    WKInterfaceDevice.current().play(.notification)
+                }
             }
         }
     }
