@@ -74,6 +74,11 @@ struct ContentView: View {
             if Double(squatCounter.count) >= targetSquats {
                 Color.black.opacity(0.8)
                     .edgesIgnoringSafeArea(.all)
+                    .onAppear {
+                        Task {
+                            await playCompletionHaptics()
+                        }
+                    }
                 
                 VStack(spacing: 15) {
                     Text("🎉 目标达成！")
@@ -93,6 +98,13 @@ struct ContentView: View {
                     }
                 }
             }
+        }
+    }
+    
+    private func playCompletionHaptics() async {
+        for _ in 0..<3 {
+            WKInterfaceDevice.current().play(.notification)
+            try? await Task.sleep(nanoseconds: 800_000_000) // 0.8秒的间隔
         }
     }
 }
