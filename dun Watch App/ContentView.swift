@@ -30,9 +30,9 @@ class SquatCounter: ObservableObject {
             let verticalMovement = gravity.y
             
             // 检测蹲下和站起的阈值
-            if let strongSelf = self, verticalMovement < -0.08 && !strongSelf.isInSquatPosition {
+            if let strongSelf = self, verticalMovement < -0.0003 && !strongSelf.isInSquatPosition {
                 strongSelf.isInSquatPosition = true
-            } else if let strongSelf = self, verticalMovement > -0.07 && strongSelf.isInSquatPosition {
+            } else if let strongSelf = self, verticalMovement > -0.0001 && strongSelf.isInSquatPosition {
                 strongSelf.isInSquatPosition = false
                 strongSelf.count += 1
                 
@@ -51,7 +51,7 @@ class SquatCounter: ObservableObject {
 
 struct ContentView: View {
     @StateObject private var squatCounter = SquatCounter()
-    @State private var targetSquats = 10.0
+    @State private var targetSquats = 100.0
     
     var body: some View {
         ZStack {
